@@ -16,6 +16,8 @@ BOARD_VENDOR := sony
 
 PLATFORM_PATH := device/sony/msm8974-common
 
+BUILD_BROKEN_DUP_RULES := true
+
 TARGET_SPECIFIC_HEADER_PATH += $(PLATFORM_PATH)/include
 
 # Architecture
