@@ -1,8 +1,8 @@
 <manifest version="1.0" type="device">
     <hal format="hidl">
         <name>android.hardware.audio</name>
-        <transport>hwbinder</transport>
-        <version>4.0</version>
+        <transport arch="32">passthrough</transport>
+        <version>2.0</version>
         <interface>
             <name>IDevicesFactory</name>
             <instance>default</instance>
@@ -10,8 +10,8 @@
     </hal>
     <hal format="hidl">
         <name>android.hardware.audio.effect</name>
-        <transport>hwbinder</transport>
-        <version>4.0</version>
+        <transport arch="32">passthrough</transport>
+        <version>2.0</version>
         <interface>
             <name>IEffectsFactory</name>
             <instance>default</instance>
@@ -47,7 +47,7 @@
     </hal>
     <hal format="hidl">
         <name>android.hardware.gnss</name>
-        <transport arch="32">passthrough</transport>
+        <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
             <name>IGnss</name>
@@ -56,16 +56,14 @@
     </hal>
     <hal format="hidl">
         <name>android.hardware.drm</name>
-        <transport arch="32">passthrough</transport>
+        <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
             <name>ICryptoFactory</name>
-            <instance>widevine</instance>
             <instance>default</instance>
         </interface>
         <interface>
              <name>IDrmFactory</name>
-             <instance>widevine</instance>
              <instance>default</instance>
         </interface>
     </hal>
@@ -100,7 +98,7 @@
     <hal format="hidl">
         <name>android.hardware.health</name>
         <transport>hwbinder</transport>
-        <version>1.0</version>
+        <version>2.0</version>
         <interface>
             <name>IHealth</name>
             <instance>default</instance>
@@ -121,6 +119,19 @@
         <version>2.0</version>
         <interface>
             <name>ILight</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.media.omx</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IOmx</name>
+            <instance>default</instance>
+        </interface>
+        <interface>
+            <name>IOmxStore</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -154,10 +165,16 @@
     <hal format="hidl">
         <name>android.hardware.radio</name>
         <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
+        <version>1.1</version>
+         <interface>
             <name>IRadio</name>
             <instance>slot1</instance>
+            <instance>slot2</instance>
+        </interface>
+        <interface>
+            <name>ISap</name>
+            <instance>slot1</instance>
+            <instance>slot2</instance>
         </interface>
     </hal>
     <hal format="hidl">
@@ -184,15 +201,6 @@
         <version>1.0</version>
         <interface>
             <name>ISensors</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-   <hal format="hidl">
-        <name>android.hardware.soundtrigger</name>
-        <transport>hwbinder</transport>
-        <version>2.1</version>
-        <interface>
-            <name>ISoundTriggerHw</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -244,22 +252,18 @@
     <hal format="hidl">
         <name>android.hardware.wifi.supplicant</name>
         <transport>hwbinder</transport>
-        <version>1.2</version>
+        <version>1.1</version>
         <interface>
             <name>ISupplicant</name>
             <instance>default</instance>
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.lineage.touch</name>
+        <name>vendor.lineage.trust</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
-            <name>ITouchscreenGesture</name>
-            <instance>default</instance>
-        </interface>
-        <interface>
-            <name>IGloveMode</name>
+            <name>IUsbRestrict</name>
             <instance>default</instance>
         </interface>
     </hal>

@@ -1,5 +1,4 @@
 # Copyright (C) 2014 The CyanogenMod Project
-#               2019 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,13 +14,15 @@
 
 PLATFORM_PATH := device/sony/msm8974-common
 
+# Include msm8974-common system properties
+include $(PLATFORM_PATH)/system_prop.mk
+
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += \
     $(PLATFORM_PATH)/overlay \
     $(PLATFORM_PATH)/overlay-lineage
 
 ifneq ($(BOARD_HAVE_RADIO),false)
-    DEVICE_PACKAGE_OVERLAYS += $(PLATFORM_PATH)/overlay-radio
     $(call inherit-product, $(PLATFORM_PATH)/radio.mk)
 else
     DEVICE_PACKAGE_OVERLAYS += $(PLATFORM_PATH)/overlay-wifionly
@@ -30,19 +31,10 @@ endif
 PRODUCT_ENFORCE_RRO_TARGETS := \
     framework-res
 
-# Permissions
-PRODUCT_COPY_FILES += \
-    $(PLATFORM_PATH)/rootdir/system/vendor/etc/permissions/permissions_sony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/permissions_sony.xml
-
-# System properties
-include $(LOCAL_PATH)/systemprop.mk
-
 # Audio
 PRODUCT_PACKAGES += \
-    android.hardware.audio.effect@4.0-impl \
-    android.hardware.audio@4.0-impl \
-    android.hardware.audio@2.0-service \
-    android.hardware.soundtrigger@2.1-impl
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio.effect@2.0-impl
 
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
@@ -55,26 +47,36 @@ PRODUCT_PACKAGES += \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
+    libqcomvoiceprocessingdescriptors \
     tinymix
 
 # Audio configuration
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
+    $(PLATFORM_PATH)/configs/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
+
+# Binder Shim
+PRODUCT_PACKAGES += \
+    libshim_binder
 
 # Bluetooth
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-service
 
-# Camera (stock blobs)
+# Camera
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     camera.device@1.0-impl
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/external_camera_config.xml:system/vendor/etc/external_camera_config.xml
+PRODUCT_PACKAGES += \
+    camera.qcom \
+    libshims_idd \
+    libshims_signal
 
 PRODUCT_PACKAGES += \
-    camera.qcom
+    Snap
+
+PRODUCT_COPY_FILES += \
+    $(PLATFORM_PATH)/configs/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
 
 # Display
 PRODUCT_PACKAGES += \
@@ -82,7 +84,8 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.mapper@2.0-impl \
     android.hardware.graphics.composer@2.1-impl \
-    android.hardware.graphics.composer@2.1-service
+    android.hardware.graphics.composer@2.1-service \
+    android.hardware.renderscript@1.0-impl
 
 PRODUCT_PACKAGES += \
     hwcomposer.msm8974 \
@@ -96,8 +99,7 @@ PRODUCT_PACKAGES += \
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
-    android.hardware.drm@1.0-service \
-    android.hardware.drm@1.1-service.clearkey
+    android.hardware.drm@1.0-service
 
 # Dumpstate
 PRODUCT_PACKAGES += \
@@ -107,22 +109,20 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.broadcastradio@1.0-impl
 
-# GNSS
-PRODUCT_PACKAGES += \
-    android.hardware.gnss@1.0-impl
-
 # GPS
-PRODUCT_COPY_FILES += \
-    $(PLATFORM_PATH)/gps/gps.conf:$(TARGET_COPY_OUT_VENDOR)/etc/gps_debug.conf \
-    frameworks/native/data/etc/android.hardware.location.gps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.location.gps.xml
-
 PRODUCT_PACKAGES += \
-    gps.msm8974 \
-    libloc_core \
-    libloc_eng \
-    libgps.utils \
-    libloc_ds_api \
-    libloc_api_v02
+    android.hardware.gnss@1.0-impl \
+    android.hardware.gnss@1.0-service \
+    gps.msm8974
+
+PRODUCT_COPY_FILES += \
+    $(PLATFORM_PATH)/gps/etc/flp.conf:system/etc/flp.conf \
+    $(PLATFORM_PATH)/gps/etc/gps.conf:system/etc/gps.conf \
+    $(PLATFORM_PATH)/gps/etc/izat.conf:system/etc/izat.conf \
+    $(PLATFORM_PATH)/gps/etc/sap.conf:system/etc/sap.conf
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.location.gps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.location.gps.xml
 
 # Health
 PRODUCT_PACKAGES += \
@@ -140,11 +140,9 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
+    android.hardware.light@2.0-impl \
+    android.hardware.light@2.0-service \
     lights.msm8974
-
-PRODUCT_PACKAGES += \
-	android.hardware.light@2.0-impl \
-    android.hardware.light@2.0-service
 
 # Media profile
 PRODUCT_COPY_FILES += \
@@ -157,22 +155,12 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service
 
-#  Mobile Data
+# Net
 PRODUCT_PACKAGES += \
+    android.system.net.netd@1.0 \
     librmnetctl \
-    libxml2
-
-# Netd
-PRODUCT_PACKAGES += \
-    android.system.net.netd@1.0
-
-# Netutils
-PRODUCT_PACKAGES += \
+    libxml2 \
     netutils-wrapper-1.0
-
-# NFC
-PRODUCT_PACKAGES += \
-    android.hardware.nfc@1.0-service
 
 # Omx
 PRODUCT_PACKAGES += \
@@ -186,45 +174,31 @@ PRODUCT_PACKAGES += \
     libc2dcolorconvert \
     libstagefrighthw
 
-# For android_filesystem_config.h
-PRODUCT_PACKAGES += \
-   fs_config_files
-
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.ethernet.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.ethernet.xml
 
+PRODUCT_COPY_FILES += \
+    $(PLATFORM_PATH)/configs/permissions_sony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/permissions_sony.xml
+
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.0-impl \
-    android.hardware.power@1.0-service
+    android.hardware.power@1.1-service-qti
 
-# Recovery
-PRODUCT_PACKAGES += \
-    keycheck
-
-# Rendering
-PRODUCT_PACKAGES += \
-    android.hardware.renderscript@1.0-impl
-
-#RIL
+# RIL
 PRODUCT_PACKAGES += \
     android.hardware.radio@1.0-impl \
     android.hardware.radio.deprecated@1.0-impl
 
 # Seccomp
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
-    $(LOCAL_PATH)/seccomp/mediaextractor.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
+    $(PLATFORM_PATH)/configs/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
+    $(PLATFORM_PATH)/configs/seccomp/mediaextractor.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
 # Sensors
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     android.hardware.sensors@1.0-service
-
-# Snap Camera
-PRODUCT_PACKAGES += \
-    Snap
 
 # Thermal management
 PRODUCT_PACKAGES += \
@@ -234,14 +208,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     thermanager
 
-# TimeKeep for managing time offsets w.r.t. RTC
+# TimeKeep
 PRODUCT_PACKAGES += \
     timekeep \
     TimeKeep
-
-# Touch HAL
-PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.sony_msm8974
 
 # Trust HAL
 PRODUCT_PACKAGES += \
@@ -256,9 +226,9 @@ PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
     android.hardware.vibrator@1.0-service
 
-# WiFi
+# Wifi
 PRODUCT_PACKAGES += \
-    android.hardware.wifi@1.0-service
+    android.hardware.wifi@1.0-service.sony_msm8974
 
 PRODUCT_PACKAGES += \
     libwpa_client \
@@ -267,6 +237,5 @@ PRODUCT_PACKAGES += \
     wpa_supplicant \
     wpa_supplicant.conf
 
-# Doze
-PRODUCT_PACKAGES += \
-    OnePlusDoze
+# Call the proprietary setup
+$(call inherit-product-if-exists, vendor/sony/msm8974-common/msm8974-common-vendor.mk)

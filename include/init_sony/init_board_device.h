@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The LineageOS Project
+ * Copyright (C) 2016 The CyanogenMod Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,10 @@
 #define LED_RED_PATH "/sys/class/leds/led:rgb_red/"
 #define LED_GREEN_PATH "/sys/class/leds/led:rgb_green/"
 #define LED_BLUE_PATH "/sys/class/leds/led:rgb_blue/"
+#define VIBRATOR_PATH "/sys/class/timed_output/vibrator/enable"
 
 // Constants: devices controls
 #define DEV_BLOCK_FOTA_NUM 16
-
-// Constants: init configurations
-#define KEYCHECK_TIMEOUT 3
 
 // Class: init_board_device
 class init_board_device : public init_board_common
@@ -51,25 +49,11 @@ public:
             // Short vibration
             vibrate(50);
 
-            // LEDs boot selection animation
-            led_color(255, 0, 255);
-            msleep(100);
-            led_color(0, 0, 0);
-            msleep(100);
-            led_color(255, 0, 255);
-            msleep(100);
-            led_color(0, 0, 0);
-            msleep(100);
-            led_color(255, 0, 255);
-            msleep(100);
-            led_color(0, 0, 0);
-            msleep(100);
-            led_color(255, 0, 255);
-            msleep(100);
-            led_color(0, 0, 0);
-            msleep(100);
-            led_color(255, 0, 255);
-            msleep(200);
+            // LED boot selection colors
+            led_color(0, 255, 0);
+            msleep(1500);
+            led_color(255, 0, 0);
+            msleep(1500);
             _exit(1);
         }
     }
@@ -83,13 +67,17 @@ public:
             vibrate(100);
         }
 
-        // Wait for the animated keycheck to end or kill it
-        system_exec_kill(pid_introduce_keycheck, KEYCHECK_TIMEOUT);
+        // Kill the animated keycheck to end
+        system_exec_kill(pid_introduce_keycheck, 0);
     }
 
     // Board: introduction for Android
     virtual void introduce_android()
     {
+        // LED Android colors
+        led_color(0, 255, 0);
+        msleep(1000);
+
         // Power off LED
         led_color(0, 0, 0);
     }
@@ -97,17 +85,14 @@ public:
     // Board: introduction for Recovery
     virtual void introduce_recovery()
     {
-        // LEDs Recovery animation
-        led_color(255, 100, 0);
-        msleep(1500);
-        led_color(0, 0, 0);
+        // LED Recovery colors
+        led_color(0, 0, 255);
     }
 
     // Board: finish init execution
     virtual void finish_init()
     {
-        // Power off LED and vibrator
-        led_color(0, 0, 0);
+        // Power off vibrator
         vibrate(0);
     }
 
@@ -122,7 +107,7 @@ public:
     // Board: set hardware vibrator
     void vibrate(uint8_t strength)
     {
-        write_int("/sys/class/timed_output/vibrator/enable", strength);
+        write_int(VIBRATOR_PATH, strength);
     }
 };
 

@@ -19,11 +19,8 @@
 -->
 
 <!-- These resources are around just to allow their values to be customized
-     for different hardware and product builds. -->
+    for different hardware and product builds. -->
 <resources>
-  <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
-  <bool name="config_intrusiveNotificationLed">true</bool>
-
-  <!-- Default value for led color when battery is medium charged -->
-  <integer name="config_notificationsBatteryMediumARGB">0xffff3000</integer>
+ <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
+ <bool name="config_intrusiveNotificationLed">true</bool>
 </resources>

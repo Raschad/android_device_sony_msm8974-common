@@ -16,8 +16,6 @@ BOARD_VENDOR := sony
 
 PLATFORM_PATH := device/sony/msm8974-common
 
-BUILD_BROKEN_DUP_RULES := true
-
 TARGET_SPECIFIC_HEADER_PATH += $(PLATFORM_PATH)/include
 
 # Architecture
@@ -34,25 +32,25 @@ TARGET_NO_RADIOIMAGE := true
 
 # Kernel
 BOARD_KERNEL_BASE     := 0x00000000
-BOARD_KERNEL_IMAGE_NAME := zImage
+BOARD_KERNEL_IMAGE_NAME := zImage-dtb
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
-BOARD_KERNEL_SEPARATED_DT := true
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
 TARGET_KERNEL_SOURCE := kernel/sony/msm8974
 
 # Platform
 TARGET_BOARD_PLATFORM := msm8974
 
+# Apex
+TARGET_FLATTEN_APEX := true
+
 # Audio
 AUDIO_FEATURE_DISABLED_USBAUDIO := true
 AUDIO_FEATURE_ENABLED_EXTN_POST_PROC := true
 BOARD_USES_ALSA_AUDIO := true
-USE_LEGACY_LOCAL_AUDIO_HAL := true
 
-# Bootanimation
-TARGET_BOOTANIMATION_PRELOAD := true
-TARGET_BOOTANIMATION_TEXTURE_CACHE := true
+# Binder Shim
+TARGET_LD_SHIM_LIBS := \
+    /system/vendor/lib/libperipheral_client.so|libshim_binder.so
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -62,27 +60,26 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 TARGET_USES_MEDIA_EXTENSIONS := true
 
+# Camera Shims
+TARGET_LD_SHIM_LIBS += \
+    /system/vendor/bin/credmgrd|/system/vendor/lib/libshims_signal.so \
+    /system/vendor/bin/iddd|/system/vendor/lib/libshims_idd.so \
+    /system/vendor/bin/mm-qcamera-daemon|libandroid.so \
+    /system/vendor/bin/suntrold|/system/vendor/lib/libshims_signal.so \
+    /system/lib/hw/camera.vendor.qcom.so|libsensor.so \
+    /system/lib/libcammw.so|libsensor.so
+
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
-# exFAT
-TARGET_EXFAT_DRIVER := exfat
-
-# GPS
-BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
-BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
-TARGET_NO_RPC := true
-
-# For android_filesystem_config.h
-TARGET_FS_CONFIG_GEN += device/sony/msm8974-common/config.fs
+# Filesystem
+TARGET_FS_CONFIG_GEN += $(PLATFORM_PATH)/config.fs
 
 # Graphics
 TARGET_USES_ION := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 TARGET_USES_GRALLOC1_ADAPTER := true
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
-VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
 
 # Shader cache config options
 # Maximum size of the  GLES Shaders that can be cached for reuse.
@@ -95,17 +92,8 @@ MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
 TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS := 0x02000000U
 
-# Init configuration for init_sony
-BOARD_USES_INIT_SONY := true
-
 # Lights HAL
 TARGET_PROVIDES_LIBLIGHT := true
-
-# LLVM
-TARGET_USE_SDCLANG := true
-
-# Media
-TARGET_QCOM_MEDIA_VARIANT := caf-msm8974
 
 # Power
 TARGET_HAS_LEGACY_POWER_STATS := true
@@ -114,22 +102,18 @@ TARGET_USES_INTERACTION_BOOST := true
 
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
-TARGET_USES_QCOM_BSP := true
 
-# RIL
-TARGET_RIL_VARIANT := caf
+# Recovery
+TARGET_RECOVERY_UI_BLANK_UNBLANK_ON_INIT := true
 
 # Security patch level
 VENDOR_SECURITY_PATCH := 2016-05-01
 
 # SELinux
-#include device/qcom/sepolicy-legacy/sepolicy.mk
+# include device/qcom/sepolicy-legacy/sepolicy.mk
 
-#BOARD_SEPOLICY_DIRS += \
-#    device/sony/msm8974-common/sepolicy
-
-# Treble
-DEVICE_MANIFEST_FILE := device/sony/msm8974-common/treble-manifest.xml
+# BOARD_SEPOLICY_DIRS += \
+#     $(PLATFORM_PATH)/sepolicy
 
 # SODP build barrier
 PRODUCT_PLATFORM_SOD := true

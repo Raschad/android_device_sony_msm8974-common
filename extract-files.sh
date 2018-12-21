@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017 The LineageOS Project
+# Copyright (C) 2017-2019 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,21 +58,22 @@ fi
 # Initialize the helper for platform
 setup_vendor "${DEVICE_PLATFORM}" "${VENDOR}" "${LINEAGE_ROOT}" false "${CLEAN_VENDOR}"
 
-
 extract "${MY_DIR}/proprietary-files.txt" "${SRC}" ${KANG} --section "${SECTION}"
 
 if [ -s "$MY_DIR"/../$DEVICE_COMMON/proprietary-files.txt ]; then
     # Reinitialize the helper for common
-    setup_vendor "$DEVICE_COMMON" "$VENDOR" "$LINEAGE_ROOT" false "$CLEAN_VENDOR"
+    source "${MY_DIR}/../${DEVICE_COMMON}/extract-files.sh"
+    setup_vendor "${DEVICE_COMMON}" "${VENDOR}" "${LINEAGE_ROOT}" false "${CLEAN_VENDOR}"
 
-    extract "$MY_DIR"/../$DEVICE_COMMON/proprietary-files.txt "$SRC" "$SECTION"
+    extract "${MY_DIR}"/../${DEVICE_COMMON}/proprietary-files.txt "${SRC}" "${SECTION}"
 fi
 
 if [ -s "$MY_DIR"/../$DEVICE/proprietary-files.txt ]; then
     # Reinitialize the helper for device
-    setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false "$CLEAN_VENDOR"
+    source "${MY_DIR}/../${DEVICE}/extract-files.sh"
+    setup_vendor "${DEVICE}" "${VENDOR}" "${LINEAGE_ROOT}" false "${CLEAN_VENDOR}"
 
-    extract "$MY_DIR"/../$DEVICE/proprietary-files.txt "$SRC" "$SECTION"
+    extract "${MY_DIR}"/../${DEVICE}/proprietary-files.txt "${SRC}" "${SECTION}"
 fi
 
 "${MY_DIR}/setup-makefiles.sh"

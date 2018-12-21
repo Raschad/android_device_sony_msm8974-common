@@ -1,20 +1,22 @@
 [
   {
-    "remote": "lineage",
-    "repository": "LineageOS/android_device_sony_common",
-    "target_path": "device/sony/common-caf",
-    "revision": "lineage-17.0"
+    "repository": "android_kernel_sony_msm8974",
+    "target_path": "kernel/sony/msm8974"
   },
   {
-    "remote": "gh",
-    "repository": "omnirom/android_hardware_sony_thermanager",
-    "target_path": "hardware/sony/thermanager",
-    "revision": "android-8.1"
+    "repository": "android_device_sony_common",
+    "target_path": "device/sony/common"
   },
   {
-    "remote": "gh",
-    "repository": "omnirom/android_hardware_sony_macaddrsetup",
-    "target_path": "hardware/sony/macaddrsetup",
-    "revision": "android-9.0"
+    "repository": "android_hardware_sony_thermanager",
+    "target_path": "hardware/sony/thermanager"
+  },
+  {
+    "repository": "android_hardware_sony_timekeep",
+    "target_path": "hardware/sony/timekeep"
+  },
+  {
+    "repository": "android_hardware_sony_macaddrsetup",
+    "target_path": "hardware/sony/macaddrsetup"
   }
 ]

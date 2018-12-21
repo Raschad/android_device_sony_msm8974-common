@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2008 The Android Open Source Project
  * Copyright (C) 2013 Sony Mobile Communications AB
@@ -19,7 +18,7 @@
 
 #define LOG_TAG "lights.msm8974"
 
-#include <cutils/log.h>
+#include <log/log.h>
 #include <stdint.h>
 #include <limits.h>
 #include <string.h>
@@ -35,7 +34,7 @@
 
 #include <hardware/lights.h>
 
-#include "sony_lights.h"
+#define LED_BACKLIGHT_PATH "/sys/class/leds/lcd-backlight/"
 
 #define LED_RED_PATH "/sys/class/leds/led:rgb_red/"
 #define LED_GREEN_PATH "/sys/class/leds/led:rgb_green/"
