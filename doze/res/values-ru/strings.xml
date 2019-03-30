@@ -23,7 +23,7 @@
     <string name="ambient_display_enable_summary">Пробуждение экрана при получении уведомлений</string>
 
     <string name="hand_wave_gesture_title">Взмах</string>
-    <string name="hand_wave_gesture_summary">Показ уведомлений при подъеме телефона</string>
+    <string name="hand_wave_gesture_summary">Проведите ладонью над экраном для просмотра уведомлений</string>
 
     <string name="pocket_gesture_title">Карман</string>
     <string name="pocket_gesture_summary">Показ уведомлений при доставании из кармана</string>
