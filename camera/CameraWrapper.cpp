@@ -185,7 +185,7 @@ static char *camera_fixup_getparams(int __attribute__((unused)) id,
     CameraParameters params;
     params.unflatten(String8(settings));
 
-#if !LOG_NDEBUG && defined(LOG_PARAMETERS)
+#if !LOG_NDEBUG
     ALOGV("%s: original parameters:", __FUNCTION__);
     params.dump();
 #endif
@@ -336,9 +336,7 @@ static char *camera_fixup_setparams(int __attribute__((unused)) id,
         params.set(KEY_SONY_IMAGE_STABILISER, VALUE_SONY_OFF);
     }
 
-#if defined(LOG_PARAMETERS)
     params.dump();
-#endif
 
     String8 strParams = params.flatten();
     char *ret = strdup(strParams.string());
