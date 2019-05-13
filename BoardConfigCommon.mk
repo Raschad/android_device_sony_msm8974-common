@@ -14,9 +14,28 @@
 
 BOARD_VENDOR := sony
 
-PLATFORM_PATH := device/sony/msm8974-common
+# Use Snapdragon LLVM Compiler if available
+TARGET_USE_SDCLANG := true
 
-TARGET_SPECIFIC_HEADER_PATH += $(PLATFORM_PATH)/include
+# Include path
+TARGET_SPECIFIC_HEADER_PATH += device/sony/msm8974-common/include
+
+TARGET_NO_BOOTLOADER := true
+TARGET_NO_RADIOIMAGE := true
+
+# Kernel properties
+ifeq (,$(filter $(TARGET_KERNEL_SOURCE),))
+  TARGET_KERNEL_SOURCE := kernel/sony/msm8974
+endif
+
+# use CAF variants
+BOARD_USES_QCOM_HARDWARE := true
+TARGET_USES_QCOM_BSP := true
+TARGET_QCOM_MEDIA_VARIANT := caf-msm8974
+
+# Platform
+TARGET_BOOTLOADER_BOARD_NAME := MSM8974
+TARGET_BOARD_PLATFORM := msm8974
 
 # Architecture
 TARGET_ARCH := arm
@@ -24,29 +43,15 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := krait
+TARGET_CUSTOM_DTBTOOL := dtbToolLineage
 
-# Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := MSM8974
-TARGET_NO_BOOTLOADER := true
-TARGET_NO_RADIOIMAGE := true
-
-# Kernel
-BOARD_KERNEL_BASE     := 0x00000000
-BOARD_KERNEL_IMAGE_NAME := zImage
-BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
-BOARD_KERNEL_SEPARATED_DT := true
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
-TARGET_KERNEL_SOURCE := kernel/sony/msm8974
-
-# Platform
-TARGET_BOARD_PLATFORM := msm8974
+# Defines for HW subsystems
+-include $(PLATFORM_PATH)/hardware/*/BoardConfig.mk
 
 # Audio
+BOARD_USES_ALSA_AUDIO := true
 AUDIO_FEATURE_DISABLED_USBAUDIO := true
 AUDIO_FEATURE_ENABLED_EXTN_POST_PROC := true
-BOARD_USES_ALSA_AUDIO := true
-USE_LEGACY_LOCAL_AUDIO_HAL := true
 
 # Bootanimation
 TARGET_BOOTANIMATION_PRELOAD := true
@@ -56,18 +61,40 @@ TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 BOARD_HAVE_BLUETOOTH := true
 
 # Camera
+TARGET_PROVIDES_CAMERA_HAL := true
 USE_DEVICE_SPECIFIC_CAMERA := true
+TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 TARGET_USES_MEDIA_EXTENSIONS := true
+TARGET_NEEDS_LEGACY_CAMERA_HAL1_DYN_NATIVE_HANDLE := true
 
 # Charger
+HEALTHD_ENABLE_TRICOLOR_LED := true
 BOARD_CHARGER_ENABLE_SUSPEND := true
+BOARD_CHARGER_SHOW_PERCENTAGE := true
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
+BACKLIGHT_PATH :=/sys/class/leds/lcd-backlight/brightness
+RED_LED_PATH := /sys/class/leds/led:rgb_red/brightness
+GREEN_LED_PATH := /sys/class/leds/led:rgb_green/brightness
+BLUE_LED_PATH := /sys/class/leds/led:rgb_blue/brightness
+
+# Font
+EXTENDED_FONT_FOOTPRINT := true
+
+# Dexpreopt
+ifeq ($(HOST_OS),linux)
+  ifneq ($(TARGET_BUILD_VARIANT),eng)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := true
+      WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
+    endif
+  endif
+endif
 
 # exFAT
 TARGET_EXFAT_DRIVER := exfat
 
 # GPS
-USE_DEVICE_SPECIFIC_GPS := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
 TARGET_NO_RPC := true
@@ -76,6 +103,7 @@ TARGET_NO_RPC := true
 TARGET_FS_CONFIG_GEN += device/sony/msm8974-common/config.fs
 
 # Graphics
+USE_OPENGL_RENDERER := true
 TARGET_USES_ION := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
@@ -100,35 +128,22 @@ BOARD_USES_INIT_SONY := true
 # Lights HAL
 TARGET_PROVIDES_LIBLIGHT := true
 
-# LLVM
-TARGET_USE_SDCLANG := true
-
-# Media
-TARGET_QCOM_MEDIA_VARIANT := caf-msm8974
-
 # Power
 TARGET_HAS_LEGACY_POWER_STATS := true
 TARGET_HAS_NO_WLAN_STATS := true
 TARGET_USES_INTERACTION_BOOST := true
 
-# QCOM hardware
-BOARD_USES_QCOM_HARDWARE := true
-TARGET_USES_QCOM_BSP := true
-
 # RIL
 TARGET_RIL_VARIANT := caf
-
-# Security patch level
-VENDOR_SECURITY_PATCH := 2016-05-01
 
 # SELinux
 include device/qcom/sepolicy-legacy/sepolicy.mk
 
 BOARD_SEPOLICY_DIRS += \
-    $(PLATFORM_PATH)/sepolicy
-
-# SODP build barrier
-PRODUCT_PLATFORM_SOD := true
+    device/sony/msm8974-common/sepolicy
 
 # Treble
 DEVICE_MANIFEST_FILE := device/sony/msm8974-common/treble-manifest.xml
+
+# SODP build barrier
+PRODUCT_PLATFORM_SOD := true
