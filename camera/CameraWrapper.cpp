@@ -352,7 +352,6 @@ static char *camera_fixup_setparams(int __attribute__((unused)) id,
 static int camera_set_preview_window(struct camera_device *device,
         struct preview_stream_ops *window)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -369,7 +368,6 @@ static void camera_set_callbacks(struct camera_device * device,
         camera_request_memory get_memory,
         void *user)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return;
 
@@ -389,7 +387,6 @@ static void camera_set_callbacks(struct camera_device * device,
 static void camera_enable_msg_type(struct camera_device *device,
         int32_t msg_type)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return;
 
@@ -402,7 +399,6 @@ static void camera_enable_msg_type(struct camera_device *device,
 static void camera_disable_msg_type(struct camera_device *device,
         int32_t msg_type)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return;
 
@@ -415,7 +411,6 @@ static void camera_disable_msg_type(struct camera_device *device,
 static int camera_msg_type_enabled(struct camera_device *device,
         int32_t msg_type)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return 0;
 
@@ -427,7 +422,6 @@ static int camera_msg_type_enabled(struct camera_device *device,
 
 static int camera_start_preview(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -439,7 +433,6 @@ static int camera_start_preview(struct camera_device *device)
 
 static void camera_stop_preview(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return;
 
@@ -451,7 +444,6 @@ static void camera_stop_preview(struct camera_device *device)
 
 static int camera_preview_enabled(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -464,7 +456,6 @@ static int camera_preview_enabled(struct camera_device *device)
 static int camera_store_meta_data_in_buffers(struct camera_device *device,
         int enable)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -476,7 +467,6 @@ static int camera_store_meta_data_in_buffers(struct camera_device *device,
 
 static int camera_start_recording(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return EINVAL;
 
@@ -488,7 +478,6 @@ static int camera_start_recording(struct camera_device *device)
 
 static void camera_stop_recording(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return;
 
@@ -500,7 +489,6 @@ static void camera_stop_recording(struct camera_device *device)
 
 static int camera_recording_enabled(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -513,7 +501,6 @@ static int camera_recording_enabled(struct camera_device *device)
 static void camera_release_recording_frame(struct camera_device *device,
         const void *opaque)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return;
 
@@ -525,7 +512,6 @@ static void camera_release_recording_frame(struct camera_device *device,
 
 static int camera_auto_focus(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -538,7 +524,6 @@ static int camera_auto_focus(struct camera_device *device)
 
 static int camera_cancel_auto_focus(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -550,7 +535,6 @@ static int camera_cancel_auto_focus(struct camera_device *device)
 
 static int camera_take_picture(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -567,7 +551,6 @@ static int camera_take_picture(struct camera_device *device)
 
 static int camera_cancel_picture(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -580,7 +563,6 @@ static int camera_cancel_picture(struct camera_device *device)
 static int camera_set_parameters(struct camera_device *device,
         const char *params)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -606,7 +588,6 @@ static int camera_set_parameters(struct camera_device *device,
 
 static char *camera_get_parameters(struct camera_device *device)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return NULL;
 
@@ -634,7 +615,6 @@ static char *camera_get_parameters(struct camera_device *device)
 
 static void camera_put_parameters(struct camera_device *device, char *params)
 {
-    ALOGV("%s", __FUNCTION__);
     if (params)
         free(params);
 
@@ -645,7 +625,6 @@ static void camera_put_parameters(struct camera_device *device, char *params)
 static int camera_send_command(struct camera_device *device,
         int32_t cmd, int32_t arg1, int32_t arg2)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -659,7 +638,6 @@ static void camera_release(struct camera_device *device)
 {
     wrapper_camera_device_t* wrapper_dev = NULL;
 
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return;
 
@@ -675,7 +653,6 @@ static void camera_release(struct camera_device *device)
 
 static int camera_dump(struct camera_device *device, int fd)
 {
-    ALOGV("%s: camera_device %p", __FUNCTION__, device);
     if (!device)
         return -EINVAL;
 
@@ -690,7 +667,7 @@ static int camera_device_close(hw_device_t *device)
     int ret = 0;
     wrapper_camera_device_t* wrapper_dev = NULL;
 
-    ALOGV("%s: hw_device_t %p", __FUNCTION__, device);
+    ALOGV("%s", __FUNCTION__);
 
     Mutex::Autolock lock(gCameraWrapperLock);
 
@@ -756,7 +733,7 @@ static int camera_device_open(const hw_module_t *module, const char *name,
 
     Mutex::Autolock lock(gCameraWrapperLock);
 
-    ALOGV("%s: hw_device_t %p, name %s", __FUNCTION__, device, name);
+    ALOGV("%s", __FUNCTION__);
 
     if (name == NULL || check_vendor_module() != android::NO_ERROR) {
         return -EINVAL;
