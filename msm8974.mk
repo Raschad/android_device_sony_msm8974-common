@@ -158,6 +158,10 @@ PRODUCT_PACKAGES += \
     librmnetctl \
     libxml2
 
+# Music FX
+PRODUCT_PACKAGES += \
+	MusicFX
+
 # Netd
 PRODUCT_PACKAGES += \
     android.system.net.netd@1.0
@@ -219,7 +223,7 @@ PRODUCT_PACKAGES += \
 
 # Snap Camera
 PRODUCT_PACKAGES += \
-    Snap
+    SnapdragonCamera
 
 # Thermal management
 PRODUCT_PACKAGES += \
