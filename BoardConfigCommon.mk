@@ -121,10 +121,13 @@ TARGET_RIL_VARIANT := caf
 VENDOR_SECURITY_PATCH := 2016-05-01
 
 # SELinux
-include device/qcom/sepolicy-legacy/sepolicy.mk
+#include device/qcom/sepolicy-legacy/sepolicy.mk
 
-BOARD_SEPOLICY_DIRS += \
-    $(PLATFORM_PATH)/sepolicy
+#BOARD_SEPOLICY_DIRS += \
+#    device/sony/msm8974-common/sepolicy
+
+# Treble
+DEVICE_MANIFEST_FILE := device/sony/msm8974-common/treble-manifest.xml
 
 # SODP build barrier
 PRODUCT_PLATFORM_SOD := true
