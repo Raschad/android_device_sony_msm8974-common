@@ -238,4 +238,4 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf
 
 # Call the proprietary setup
-$(call inherit-product-if-exists, vendor/sony/msm8974-common/msm8974-common-vendor.mk)
+#$(call inherit-product-if-exists, vendor/sony/msm8974-common/msm8974-common-vendor.mk)
