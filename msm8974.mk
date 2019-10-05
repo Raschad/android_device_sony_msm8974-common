@@ -227,7 +227,7 @@ PRODUCT_PACKAGES += \
 
 # Snap Camera
 PRODUCT_PACKAGES += \
-    SnapdragonCamera
+    Snap
 
 # Thermal management
 PRODUCT_PACKAGES += \
